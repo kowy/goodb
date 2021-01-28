@@ -26,8 +26,6 @@ jobs:
       run: yarn test
 
     - name: Publish
-      with:
-        registry-url: 'https://registry.npmjs.org'
       run: |
         npm whoami
         yarn publish
