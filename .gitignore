@@ -1,0 +1,10 @@
+node_modules
+.vscode
+build
+/customPath/
+/db/
+/first/
+/lib/
+/.idea
+/coverage
+/microdb.iml

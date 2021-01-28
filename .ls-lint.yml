@@ -1,0 +1,14 @@
+ls:
+  .ts: camelcase
+  .d.ts: camelcase
+  .mock.ts: camelcase
+  .test.ts: camelcase
+
+ignore:
+  - coverage
+  - .eslintrc.json
+  - .git
+  - .manage_modules
+  - .vscode
+  - lib
+  - node_modules
