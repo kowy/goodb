@@ -1,10 +1,10 @@
 {
   "name": "goodb",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Fast and slim JSON database in pure typescript/javascript",
   "homepage": "https://github.com/kowy/goodb",
-  "main": "src/gooDb.ts",
-  "types": "",
+  "main": "./lib/gooDb.js",
+  "types": "./lib/gooDb.d.ts",
 
   "repository": {
     "type": "git",
@@ -29,7 +29,8 @@
   "scripts": {
     "build": "del-cli lib && tsc --build ./tsconfig.bundle.json",
     "test": "jest && yarn lint",
-    "lint": "ls-lint && eslint --ext .js,.ts {src,test}/**/* --fix && prettier --write \"{src,test}/**/*.{js,ts}\""
+    "lint": "ls-lint && eslint --ext .js,.ts {src,test}/**/* --fix && prettier --write \"{src,test}/**/*.{js,ts}\"",
+    "prepare": "yarn build"
   },
 
   "engines": {
@@ -37,7 +38,7 @@
   },
 
   "files": [
-    "/src"
+    "/lib"
   ],
 
   "devDependencies": {
