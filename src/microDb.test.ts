@@ -70,13 +70,22 @@ test("Can update document by id", () => {
   expect(obj2).toMatchObject(modifiedObj)
 })
 
-test("Should throw error when upserting doc with non-existing id", () => {
+test("Can insert doc with non-existing id", () => {
   const db = new GooDb("emptyDb", {})
 
   const doc: any = datawell.simpleDoc()
-  doc._id = "000000000000x"
+  const ID = "000000000000x"
+  doc._id = ID
 
-  expect(() => db.upsert(doc)).toThrowError(/does not exist/)
+  db.upsert(doc)
+  const result = db.findById(ID)
+  expect(result).toMatchObject({
+    _id: ID,
+    stringAttr: "String Attribute with diacritics ěščřžýáíé",
+    numberAttr: 935,
+    boolAttr: false,
+    nullAttr: null,
+  })
 })
 
 test("Can modify values by id", () => {
@@ -158,6 +167,18 @@ test("Can filter documents", () => {
   expect(foundDocs.totalDocs).toBe(2)
   expect(foundDocs.docs[0]).toMatchObject(originDocs[2])
   expect(foundDocs.docs[1]).toMatchObject(originDocs[0])
+
+  // test filtering by variable
+  const boolVariable = { $eq: false }
+  const stringVariable = "good"
+  const directionVariable = "desc"
+  const foundByVariable = db.filter({
+    selector: { boolAttr: boolVariable, anotherString: stringVariable },
+    sort: { numberAttr: directionVariable },
+  })
+  expect(foundByVariable.totalDocs).toBe(2)
+  expect(foundByVariable.docs[0]).toMatchObject(originDocs[2])
+  expect(foundByVariable.docs[1]).toMatchObject(originDocs[0])
 
   // test filtering by function and sorting by attribute name (default ascending sorting)
   const foundByFunction = db.filter({

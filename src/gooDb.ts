@@ -104,7 +104,7 @@ export default class GooDb {
     const opts = { consistent: false, ...options }
     const updatedDoc = modificatorFunction(Object.assign({}, this.memDb.data.get(id)))
     // the user might change the id, so repair it
-    updatedDoc.id = id
+    updatedDoc._id = id
     this.memDb.data.set(id, updatedDoc)
 
     this._sync(opts.consistent)
