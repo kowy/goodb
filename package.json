@@ -51,7 +51,7 @@
     "@types/node": "^14.14.10",
     "@types/prettier": "^2.1.6",
     "@types/tempy": "^0.3.0",
-    "@types/uuid": "^8.3.0",
+    "@types/nanoid": "^2.1.0",
     "@types/write-file-atomic": "^3.0.1",
     "@typescript-eslint/eslint-plugin": "^4.11.1",
     "@typescript-eslint/parser": "^4.11.1",
@@ -71,7 +71,8 @@
   "dependencies": {
     "fs": "~0.0.1-security",
     "lodash": "^4.17.20",
-    "mutexify": "^1.2.0"
+    "mutexify": "^1.2.0",
+    "nanoid": "^3.1.20"
   },
 
   "jest": {

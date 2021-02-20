@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from "uuid"
+import { nanoid } from "nanoid"
 import JsonFileSync from "./persistence/adapters/jsonFileSync"
 import MemorySync from "./persistence/adapters/memorySync"
 import { GooDbOptions, ModificationOperationOptions } from "./dto/gooDbOptions"
@@ -10,6 +10,7 @@ import { FilterRequest, FilterResponse, SortRequest } from "./dto/filter"
 
 const DB_DIRECTORY = "./db"
 const SAVE_CHECK_TIMETOUT_MS = 1000
+const ID_WIDTH_CHARS = 12
 
 export default class GooDb {
   private dbName: string
@@ -75,10 +76,7 @@ export default class GooDb {
   upsert(doc: any, options?: ModificationOperationOptions): unknown {
     const opts = { consistent: false, ...options }
 
-    if (doc._id && typeof this.memDb.data.get(doc._id) === "undefined") {
-      throw new Error(`Document with id ${doc._id} does not exist`)
-    }
-    const _id = doc._id && doc._id != "" ? doc._id : uuidv4()
+    const _id = doc._id && doc._id != "" ? doc._id : nanoid(ID_WIDTH_CHARS)
     doc._id = _id
 
     this.memDb.data.set(_id, doc)
@@ -125,7 +123,7 @@ export default class GooDb {
   }
 
   private upsertOneDoc(doc: any): unknown {
-    const _id = doc._id ? doc._id : uuidv4()
+    const _id = doc._id ? doc._id : nanoid(ID_WIDTH_CHARS)
     doc._id = _id
 
     this.memDb.data.set(_id, Object.assign({}, doc))
