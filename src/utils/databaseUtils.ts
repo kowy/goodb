@@ -1,5 +1,5 @@
+import equal from "fast-deep-equal"
 import { FilterResponse, isMatcherFunction, isSelectorObject, MatcherFunction, Selector, SelectorObject } from "../dto/filter"
-import isEqual from "lodash/isEqual"
 import * as f from "./filterUtils"
 
 export default class DatabaseUtils {
@@ -33,7 +33,7 @@ export default class DatabaseUtils {
           }
           return [
             (doc: any) => {
-              return isEqual(doc[attrName], attrValue)
+              return equal(doc[attrName], attrValue)
             },
           ]
         })
@@ -58,10 +58,10 @@ export default class DatabaseUtils {
   private static filterBySelectorObject(attrName: string, condition: SelectorObject): ((doc: any) => boolean)[] {
     const result = []
     if (typeof condition.$eq !== "undefined") {
-      result.push((doc: any) => isEqual(doc[attrName], condition.$eq))
+      result.push((doc: any) => equal(doc[attrName], condition.$eq))
     }
     if (typeof condition.$ne !== "undefined") {
-      result.push((doc: any) => !isEqual(doc[attrName], condition.$ne))
+      result.push((doc: any) => !equal(doc[attrName], condition.$ne))
     }
     if (typeof condition.$gt !== "undefined") {
       result.push((doc: any) => f.greaterThanFilter(doc, attrName, condition))
