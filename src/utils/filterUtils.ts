@@ -1,4 +1,4 @@
-import isEqual from "lodash/isEqual"
+import equal from "fast-deep-equal"
 import { Selector, SelectorObject } from "../dto/filter"
 import StringUtils from "./stringUtils"
 
@@ -43,9 +43,9 @@ export function lessThanOrEqualFilter(doc: any, attrName: string, condition: Sel
 }
 
 export function inFilter(doc: any, attrName: string, condition: SelectorObject): boolean {
-  return condition.$in?.some((possibleValue: any) => isEqual(doc[attrName], possibleValue)) ?? false
+  return condition.$in?.some((possibleValue: any) => equal(doc[attrName], possibleValue)) ?? false
 }
 
 export function ninFilter(doc: any, attrName: string, condition: SelectorObject): boolean {
-  return condition.$nin?.every((possibleValue: any) => !isEqual(doc[attrName], possibleValue)) ?? false
+  return condition.$nin?.every((possibleValue: any) => !equal(doc[attrName], possibleValue)) ?? false
 }
