@@ -1,6 +1,6 @@
 {
   "name": "goodb",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Fast and slim JSON database in pure typescript/javascript",
   "homepage": "https://github.com/kowy/goodb",
   "main": "./lib/gooDb.js",
