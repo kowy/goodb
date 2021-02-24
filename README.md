@@ -166,7 +166,7 @@ Sort by multiple attributes
 #### upsert
 Insert or update a new document to the database. 
 
-If provided document has an _id attribute set, upsert operation try to find the document with this _id and update it. If the document is missing (there is no document with this _id), an exception will be thrown. 
+If provided document has an _id attribute set, upsert operation try to find the document with this _id and update it. If the document is missing (there is no document with this _id), a new document with provided _id is created (that means you can specify a custom document _id). 
 
 On the other hand, if the document doesn't have an _id attribute or is empty, GooDB will generate this _id and save the document to DB.
 
@@ -273,13 +273,15 @@ db.filter({
     sort: "stringAttribute"
 })
 ```
-* object - a simple object with one attribute. This name determines the attribute by which results will be sorted. The value is one of:
+* object - a simple object, where you can set any number of attributes with specified order direction. Filtered documents will be sorted by these attributes. Order direction is one of:
     * asc - results are sorted upwardly (ascending)
     * desc - results are sorted downwardly (descending)
+  
+  In succeeding example document will be sortedy by *stringAttribute* downwardly and documents with same *stringAttribute* then will be sorted by *numberAttribute* upwardly. 
 ```js
 db.filter({
     selector: {},
-    sort: { stringAttribute: "desc" } 
+    sort: { stringAttribute: "desc", numberAttribute: "asc" } 
 })
 ```    
 * function - comparator function. It should take 2 parameters (documents) and return integer depending on their expected order (=0 - they are equal; <0 - first parameter is smaller than the second; >0 - first parameter is greater than the second)

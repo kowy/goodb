@@ -34,12 +34,32 @@ class DataWell {
     ]
   }
 
-  compareArrays(arr1: Array<any>, arr2: Array<any>) {
-    arr1.forEach((a1item) => {
-      arr2
-        .filter((a2item) => (a1item.numberValue = a2item.numberValue))
-        .forEach((a2item) => expect(a1item).toMatchObject(a2item.numberValue))
-    })
+  evenMoreDocs() {
+    const docs = this.multipleDocs()
+    docs.push(
+      {
+        stringAttr: "String-1",
+        numberAttr: 55,
+        boolAttr: true,
+        nullAttr: null,
+        anotherString: "bad",
+      },
+      {
+        stringAttr: "String-2",
+        numberAttr: 44,
+        boolAttr: false,
+        nullAttr: null,
+        anotherString: "bad",
+      },
+      {
+        stringAttr: "String-3",
+        numberAttr: 88,
+        boolAttr: true,
+        nullAttr: null,
+        anotherString: "unknown",
+      }
+    )
+    return docs
   }
 }
 

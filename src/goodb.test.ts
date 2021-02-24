@@ -41,7 +41,7 @@ test("Can upsert multiple values", () => {
   expect(result.offset).toBe(0)
   expect(result.totalDocs).toBe(3)
   expect(result.docs.length).toBe(3)
-  datawell.compareArrays(result.docs, datawell.multipleDocs())
+  expect(result.docs.map((it) => it.stringAttr)).toEqual(["String3", "String2", "String1"])
 })
 
 test("Can update document by id", () => {

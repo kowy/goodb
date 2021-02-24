@@ -1,5 +1,7 @@
 export type ComparatorFunction = (a: any, b: any) => number
-export type SortRequest = string | { [propName: string]: "asc" | "desc" } | ComparatorFunction
+export type AscOrDesc = "asc" | "desc"
+export type ComparatorObject = { [propName: string]: AscOrDesc }
+export type SortRequest = string | ComparatorObject | ComparatorFunction
 
 export interface SelectorObject {
   /** Matches if field equals this value */

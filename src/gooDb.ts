@@ -6,7 +6,8 @@ import Low from "./persistence/low"
 import MapSerializer from "./persistence/serializers/mapSerializer"
 import FileUtils from "./utils/fileUtils"
 import DatabaseUtils from "./utils/databaseUtils"
-import { FilterRequest, FilterResponse, SortRequest } from "./dto/filter"
+import SortUtils from "./utils/sortUtils"
+import { FilterRequest, FilterResponse } from "./dto/filter"
 
 const DB_DIRECTORY = "./db"
 const SAVE_CHECK_TIMETOUT_MS = 1000
@@ -61,8 +62,7 @@ export default class GooDb {
 
     // apply sorting if set in request
     if (request.sort && result.docs.length > 0) {
-      const sorter = GooDb.createSortComparator(docs, request.sort)
-      result.docs = result.docs.sort(sorter)
+      result.docs = SortUtils.sort(docs, request.sort)
     }
 
     // apply limit if set in request
@@ -128,72 +128,6 @@ export default class GooDb {
 
     this.memDb.data.set(_id, Object.assign({}, doc))
     return doc
-  }
-
-  private static createSortComparator(docs: any[], sorter: SortRequest): (a: any, b: any) => number {
-    let result: (a: any, b: any) => number
-
-    if (typeof sorter === "function") {
-      result = sorter
-    } else {
-      const sortAttr: string = typeof sorter === "string" ? sorter : Object.keys(sorter)[0]
-      const sortDirection: string = typeof sorter === "string" ? "asc" : sorter[sortAttr]
-      if (sortDirection === "desc") {
-        if (typeof docs[0][sortAttr] === "number") {
-          result = (a: any, b: any) => b[sortAttr] - a[sortAttr]
-        } else if (typeof docs[0][sortAttr] === "boolean") {
-          result = (a: any, b: any) => {
-            if (a[sortAttr]) {
-              if (b[sortAttr]) return 1
-              return -1
-            }
-
-            if (b[sortAttr]) return 0
-            return 1
-          }
-        } else if (typeof docs[0][sortAttr] === "string") {
-          result = (a: any, b: any): number => {
-            const aValue: string = a[sortAttr]
-            const bValue: string = b[sortAttr]
-            return bValue.localeCompare(aValue)
-          }
-        } else {
-          result = (a: any, b: any): number => {
-            if (a[sortAttr] === b[sortAttr]) return 0
-            else if (a[sortAttr] > b[sortAttr]) return -1
-            else return 1
-          }
-        }
-      } else {
-        if (typeof docs[0][sortAttr] === "number") {
-          result = (a: any, b: any): number => a[sortAttr] - b[sortAttr]
-        } else if (typeof docs[0][sortAttr] === "boolean") {
-          result = (a: any, b: any): number => {
-            if (a[sortAttr]) {
-              if (b[sortAttr]) return 0
-              return -1
-            }
-
-            if (b[sortAttr]) return 1
-            return 0
-          }
-        } else if (typeof docs[0][sortAttr] === "string") {
-          result = (a: any, b: any): number => {
-            const aValue: string = a[sortAttr]
-            const bValue: string = b[sortAttr]
-            return aValue.localeCompare(bValue)
-          }
-        } else {
-          result = (a: any, b: any): number => {
-            if (a[sortAttr] === b[sortAttr]) return 0
-            else if (a[sortAttr] > b[sortAttr]) return 1
-            else return -1
-          }
-        }
-      }
-    }
-
-    return result
   }
 
   private _sync(consistent: boolean) {
