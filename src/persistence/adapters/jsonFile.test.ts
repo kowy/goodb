@@ -31,5 +31,5 @@ describe("JsonFile", () => {
     await Promise.all(promises)
 
     expect(await file.read()).toEqual((i - 1).toString())
-  })
+  }, 30000)
 })
