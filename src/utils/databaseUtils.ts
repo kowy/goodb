@@ -84,6 +84,7 @@ export default class DatabaseUtils {
 
     if (result.length == 0) {
       console.log(`Unknown condition ${JSON.stringify(condition)} for attribute ${attrName}`)
+      result.push(() => f.notfound())
     }
 
     return result

@@ -2,6 +2,10 @@ import equal from "fast-deep-equal"
 import { Selector, SelectorObject } from "../dto/filter"
 import StringUtils from "./stringUtils"
 
+export function notfound(): boolean {
+  return false
+}
+
 export function greaterThanFilter(doc: any, attrName: string, condition: Selector): boolean {
   if (typeof doc[attrName] === "string" && typeof condition.$gt === "string") {
     return StringUtils.localCompare(doc[attrName], condition.$gt) > 0

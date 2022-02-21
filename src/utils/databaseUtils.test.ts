@@ -26,6 +26,7 @@ describe("DatabaseUtils", () => {
     shouldMatch({ lastName: "Tyl" })
     shouldMatch({ firstName: "Kajetan", lastName: "Tyl" })
     shouldMatch({ nullable: null })
+    shouldMatch({ born: 1808 })
     shouldNotMatch({ lastName: "Smetana" })
     shouldNotMatch({ notExisting: "Any value" })
   })
@@ -115,8 +116,8 @@ describe("DatabaseUtils", () => {
     shouldMatch({ lastName: { $in: ["Tyl", "Smetana"] } })
     shouldNotMatch({ lastName: { $in: ["Smetana"] } })
     shouldNotMatch({ born: { $in: [null] } }) // null is considered as 0
-    shouldMatch({ born: { $in: 1800 } }) // invalid in statements are ignored
-    shouldMatch({ lastName: { $in: "Smetana" } }) // invalid in statements are ignored
+    shouldNotMatch({ born: { $in: 1800 } }) // for invalid statements find nothing
+    shouldNotMatch({ lastName: { $in: "Smetana" } }) // for invalid statements find nothing
   })
   test("can filter by $nin operator", () => {
     shouldNotMatch({ born: { $nin: [1808] } })
@@ -126,8 +127,8 @@ describe("DatabaseUtils", () => {
     shouldNotMatch({ lastName: { $nin: ["Tyl", "Smetana"] } })
     shouldMatch({ lastName: { $nin: ["Smetana"] } })
     shouldMatch({ born: { $nin: [null] } }) // null is considered as 0
-    shouldMatch({ born: { $nin: 1800 } }) // invalid in statements are ignored
-    shouldMatch({ lastName: { $nin: "Smetana" } }) // invalid in statements are ignored
+    shouldNotMatch({ born: { $nin: 1800 } }) // for invalid statements find nothing
+    shouldNotMatch({ lastName: { $nin: "Smetana" } }) // for invalid statements find nothing
   })
   test("can filter by complex query", () => {
     shouldMatch({
