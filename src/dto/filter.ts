@@ -56,7 +56,9 @@ export interface FilterResponse<Content extends Record<string, unknown>> {
  */
 export function isSelectorObject(value: SelectorObject): value is SelectorObject {
   if (value === null) return false
-  return Object.keys(value).every((it) => ["$eq", "$ne", "$gt", "$gte", "$lt", "$lte", "$in", "$nin"].includes(it))
+  const keys = Object.keys(value)
+  if (keys.length == 0) return false
+  return keys.every((it) => ["$eq", "$ne", "$gt", "$gte", "$lt", "$lte", "$in", "$nin"].includes(it))
 }
 
 export function isMatcherFunction(value: MatcherFunction | Selector): value is MatcherFunction {
